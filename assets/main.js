@@ -1,95 +1,64 @@
-$(function() {
-    var client = ZAFClient.init();
-    client.invoke('resize', { width: '100%', height: '120px' });
-    
-    client.metadata().then(function(metadata) {
-        console.log(metadata.settings);
-    });
-    /* 
-    $.ajax({
-            "dataType": 'json',
-            "type": "GET",
-            "url": 'http://new.pa-patrick.ndvl/ajax/zendesk_test.pl?action=reset_buyer_notification',
-            // "data": aoData,
-            success: function(result){
-                console.log(result);
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                // tokopedia.alert_error();
-                console.log(XMLHttpRequest);
-            },
-            beforeSend: function(){
-                // Handle the beforeSend event
-                console.log("before send");
-            },
-            complete: function(){
-                // Handle the complete event
-                console.log("complete");
-            }
-    }); */
-                
-    /* client.request(settings).then(
-        function(data) {
-            // showInfo(data);
-            console.log(data);
-        },
-        function(response) {
-            // showError(response);
-            console.log(response);
-        }
-    ); */
-    
+var client = ZAFClient.init();
+client.invoke('resize', { width: '100%', height: '250px' });
+
+client.metadata().then(function(metadata) {
+    console.log(metadata.settings);
+});
+
+var user_id = 0;
+
+$(function() {  
     $(document).ready(function(){
-        renderPage('home');
-    });
-    
-    $(document).on("click", "#user-profile", function(){
-        client.get('ticket.requester.id').then(function(data) {
-            var user_id = data['ticket.requester.id'];
-            requestUserInfo(client, user_id);
-        });
-    });
-    
-    $(document).on("click", "#user-profile", function(){
-        $(".btn").button('loading');
-    });
+        renderPage('loading');
+        requestUserInfo();
+    });  
     
     $(document).on("click", "#go-to-home", function(){
+        $("#top-nav").removeClass("hidden");
         renderPage('home');
-    });
+    }); 
 });
+
+function requestUserInfo() {
+    client.get('ticket.requester.id').then(function(data) {
+        var user_id = data['ticket.requester.id'];
+            var settings = {
+            url: '/api/v2/users/' + user_id + '.json',
+            type:'GET',
+            dataType: 'json',
+        };
+
+        client.request(settings).then(
+            function(data) {
+                showUserInfo(data);
+            },
+            function(response) {
+                showError(response);
+            }
+        );
+    }); 
+}
 
 function renderPage(name, data){
     var templates = {
+        'index'     : '#index-template',
         'home'      : '#home-template',
-        'error'     : '#error-template',
-        'requester' : '#requester-template'
+        'loading'   : '#loading-template',
+        'error'     : '#error-template'
     };
 
-    var container = $('section#main-content');
+    var container = $("#main-content");
     var page      = templates[name];
     var source    = $(page).html();
     var template  = Handlebars.compile(source);
     var html      = template(data);
-    console.log(html);
+
     container.html(html);
-}
-
-function requestUserInfo(client, id) {
-    var settings = {
-        url: '/api/v2/users/' + id + '.json',
-        type:'GET',
-        dataType: 'json',
+    
+    var navbar = $(".navbar-toggle");
+    if(navbar.attr("aria-expanded") == "true"){
+        navbar.click();
     };
-
-    client.request(settings).then(
-        function(data) {
-            showInfo(data);
-        },
-        function(response) {
-            showError(response);
-        }
-    );
 }
 
 function formatDate(date) {
@@ -103,15 +72,41 @@ function formatDate(date) {
     return date;
 }
 
-function showInfo(data) {
-    var requester_data = {
-        'name'          : data.user.name,
-        'tags'          : data.user.tags,
-        'created_at'    : formatDate(data.user.created_at),
-        'last_login_at' : formatDate(data.user.last_login_at)
-    };
+function showUserInfo(data) {
+    var dt = new Object();
+    dt.action     = "get_user_info";
+    dt.user_email = data.user.email;
     
-    renderPage('requester', data);
+    $.ajax({
+        "dataType": 'json',
+        "type": "POST",
+        "data" : dt,
+        "url": 'http://new.pa-patrick.ndvl/ajax/zendesk/zendesk.pl',
+        success: function(result){
+            console.log(result);
+            var requester_data = {
+                'name'    : data.user.name,
+                'email'   : data.user.email,
+                'status'  : result.status,
+                'user_id' : result.user_id
+            };
+            user_id = result.user_id;
+            renderPage('index', requester_data);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            // tokopedia.alert_error();
+            console.log(XMLHttpRequest);
+            renderPage('error', XMLHttpRequest);
+        },
+        beforeSend: function(){
+            // Handle the beforeSend event
+            console.log("before send");
+        },
+        complete: function(){
+            // Handle the complete event
+            console.log("complete");
+        }
+    });
 }
 
 function showError(response) {
@@ -120,5 +115,5 @@ function showError(response) {
         'statusText' : response.statusText
     };
     
-    renderPage('error', data);
+    renderPage('error', error_data);
 }

@@ -1,13 +1,23 @@
-footer {
-  font-size: 10px;
-  padding-top: 20px;
+.navbar-toggle {
+  border: none;
+  background: transparent !important;
 }
-
+.navbar-toggle:hover {
+  background: transparent !important;
+}
+.collapsing {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    -webkit-transition: height 0.05s ease;
+    -o-transition: height 0.05s ease;
+    transition: height 0.05s ease;
+}
 .data {
   color: #363;
   padding-left: 6px;
 }
-#content td {
+td {
 	font-size: 12px;
 	padding-top: 2px;
 }
