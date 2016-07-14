@@ -1,0 +1,39 @@
+{
+    "name": "Tokopedia Zendesk Apps (TZA)",
+    "author": {
+        "name": "Patrick Alexander",
+        "email": "patrick.alexander@tokopedia.com",
+        "url": ""
+    },
+    "defaultLocale": "en",
+    "private": true,
+    "location": { "zendesk":
+        { 
+            "ticket_sidebar": "assets/iframe.html" 
+        }
+    },
+    "version": "1.0",
+    "frameworkVersion": "2.0",
+    "parameters": [
+        {
+            "name": "subdomain",
+            "type": "text",
+            "required": true,
+            "secure": false,
+            "default": "yoursubdomain"
+        },
+        {
+            "name": "token",
+            "type": "text",
+            "required": true,
+            "secure": true
+        },
+        {
+            "name": "useSSL",
+            "type": "checkbox"
+        }
+    ],
+    "domainWhitelist": [
+        "{{setting.subdomain}}"
+    ]
+}

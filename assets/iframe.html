@@ -1,0 +1,60 @@
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
+</head>
+<body>  
+    <section id="main-content"></section>
+    
+    <footer>
+        <a id="go-to-home">Home</a>
+    </footer>
+    <!-- Handlebar Template -->
+    <script id="requester-template" type="text/x-handlebars-template">
+        <table>
+            <tr>
+                <td>Customer:</td>
+                <td class="data">{{name}}</td>
+            </tr>
+            {{#if tags}}
+            <tr>
+                <td>Tags:</td>
+                <td class="data">{{#each tags}}{{this}} {{/each}}</td>
+            </tr>
+            {{/if}}
+            <tr>
+                <td>Added:</td>
+                <td class="data">{{created_at}}</td>
+            </tr>
+            <tr>
+                <td>Last signed in:</td>
+                <td class="data">{{last_login_at}}</td>
+            </tr>
+        </table>
+    </script>
+    <script id="error-template" type="text/x-handlebars-template">
+        <p>{{status}} - {{statusText}} error. Please report a bug at the link below.</p>
+    </script>
+    <script id="home-template" type="text/x-handlebars-template">
+        <div id="start-page">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Action
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Reset Buyer Notification</a></li>
+                    <li><a href="#">Reset Seller Notification</a></li>
+                    <li><a href="#" id="user-profile" data-loading-text="Loading...">View User Profile</a></li>
+                </ul>
+            </div>
+        </div>
+    </script>
+    <!-- https://github.com/zendesk/zendesk_app_framework_sdk -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+</body>
+</html>
