@@ -6,68 +6,148 @@
 <body>
     <div id="apps-container" class="loading">
         <!-- Static navbar -->
-        <nav id="top-nav" class="navbar navbar-default hidden">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">TZA</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a id="go-to-home" href="#">Home</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reset<span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Reset Buyer Notification</a></li>
-                                <li><a href="#">Reset Seller Notification</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <nav id="top-nav" class="navbar navbar-default hidden"></nav>
         <div id="main-content"></div>
     </div>
     <!-- Begin Handlebar Template -->
     <script id="index-template" type="text/x-handlebars-template">
-        <table>
+        <table id="user-info">
             <tr>
-                <td colspan=2>Requester Info</td>
+                <td colspan=2><h6><b>User Info</b></h6></td>
             </tr>
             <tr>
                 <td>Name</td>
                 <td>:</td>
-                <td class="data">{{name}}</td>
+                <td class="data">{{user.name}}</td>
             </tr>
             <tr>
                 <td>Email</td>
                 <td>:</td>
-                <td class="data">{{email}}</td>
+                <td class="data">{{user.email}}</td>
             </tr>
             <tr>
                 <td>Status</td>
                 <td>:</td>
-                <td class="data">{{status}}</td>
+                <td class="data">{{user.status}}</td>
             </tr>
             <tr>
-                <td>Tokopedia User ID</td>
+                <td>User ID</td>
                 <td>:</td>
-                <td class="data">{{user_id}}</td>
+                <td class="data"><a href="{{user.url}}" target="_blank">{{user.url}}</a></td>
             </tr>
-            {{#if user_id}}
+        </table>
+        <table id="shop-info">
+        {{#if shop.id}}
+            <tr>
+                <td colspan=2><h6><b>Shop Info</b></h6></td>
+            </tr>
+            <tr>
+                <td>Shop ID</td>
+                <td>:</td>
+                <td class="data">{{shop.id}}</td>
+            </tr>
+            <tr>
+                <td>Shop Name</td>
+                <td>:</td>
+                <td class="data">{{shop.name}}</td>
+            </tr>
+            <tr>
+                <td>Shop Domain</td>
+                <td>:</td>
+                <td class="data"><a href="{{shop.domain}}" target="_blank">{{shop.domain}}</a></td>
+            </tr>
+        {{else}}
+            <tr>
+                <td colspan=2><h6><b>This user doesn't have shop.</b></h6></td>
+            </tr>
+        {{/if}}
+        </table>
+        <br/>
+        {{#if user.id}}
+        <table id="action">
             <tr>
                 <td colspan=3><button id="go-to-home" class="btn btn-default" type="submit">Take Action</button></td>
             </tr>
-            {{/if}}
         </table>
+        {{/if}}
+    </script>
+    <script id="navbar-template" type="text/x-handlebars-template">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">TZA Action Menu V1.0</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a id="go-to-home" href="#">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reset<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            {{#if user_id}}
+                                <li><a id="reset-buyer-notif" href="#">Buyer Notification</a></li>
+                            {{/if}}
+                            {{#if shop_id}}
+                                <li><a id="reset-seller-notif" href="#">Seller Notification</a></li>
+                            {{/if}}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </script>
     <script id="home-template" type="text/x-handlebars-template">
-        This is Home
+        Welcome to Tokopedia Zendesk Apps (TZA V1.0) <br/><br/>
+        In this version you can do some action :
+        <ol>
+            <li>
+                Reset
+                <ol>
+                    <li>
+                        Buyer Notification
+                        <ul>
+                            <li>Order Status</li>
+                            <li>Order Deliver</li>
+                            <li>Order Cancel</li>
+                            <li>Pay Confirm</li>
+                            <li>Pay Confirmed</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Seller Notification
+                        <ul>
+                            <li>New Order</li>
+                            <li>Shipping Confirmation</li>
+                            <li>Deliver Order</li>
+                        </ul>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+    </script>
+    <script id="reset-template" type="text/x-handlebars-template">
+        Reset {{type}} Notification Success!. <br/><br/>
+        {{#if buyer}}
+        Current Notification :
+        <ul>
+            <li>Order Status : {{notification.buyer_order_status}}</li>
+            <li>Order Deliver : {{notification.buyer_order_deliver}}</li>
+            <li>Order Cancel : {{notification.buyer_order_cancel}}</li>
+            <li>Pay Confirm : {{notification.buyer_pay_confirm}}</li>
+            <li>Pay Confirmed : {{notification.buyer_pay_confirmed}}</li>
+        </ul>
+        {{else}}
+        Current Notification :
+        <ul>
+            <li> New Order : {{notification.seller_new_order}}</li>
+            <li> Shipping Confirmation : {{notification.seller_shipping_conf}}</li>
+            <li> Deliver Order : {{notification.seller_deliver_order}}</li>
+        </ul>
+        {{/if}}
     </script>
     <script id="loading-template" type="text/x-handlebars-template">
         <img src="http://ecs7.tokopedia.net/img/loading-bar.gif">
