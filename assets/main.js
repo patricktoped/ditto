@@ -1,15 +1,14 @@
 var client = ZAFClient.init();
+var config;
+var user_id;
+
 client.invoke('resize', { width: '100%', height: '250px' });
-
 client.metadata().then(function(metadata) {
-    console.log(metadata.settings);
+    config = metadata.settings;
 });
-
-var user_id = 0;
 
 $(function() {  
     $(document).ready(function(){
-        renderPage('loading');
         requestUserInfo();
     });  
     
@@ -22,7 +21,7 @@ $(function() {
 function requestUserInfo() {
     client.get('ticket.requester.id').then(function(data) {
         var user_id = data['ticket.requester.id'];
-            var settings = {
+        var settings = {
             url: '/api/v2/users/' + user_id + '.json',
             type:'GET',
             dataType: 'json',
@@ -59,6 +58,11 @@ function renderPage(name, data){
     if(navbar.attr("aria-expanded") == "true"){
         navbar.click();
     };
+    
+    if($("#apps-container").hasClass("loading")){
+        $("#apps-container").removeClass("loading");
+    }
+    
 }
 
 function formatDate(date) {
@@ -78,12 +82,13 @@ function showUserInfo(data) {
     dt.user_email = data.user.email;
     
     $.ajax({
-        "dataType": 'json',
-        "type": "POST",
-        "data" : dt,
-        "url": 'http://new.pa-patrick.ndvl/ajax/zendesk/zendesk.pl',
+        dataType: "jsonp",
+        type: "GET",
+        data : dt,
+        url: config.subdomain+"/ajax/zendesk/zendesk.pl",
+        jsonpCallback: "data_handler",
+        timeout: 5000,
         success: function(result){
-            console.log(result);
             var requester_data = {
                 'name'    : data.user.name,
                 'email'   : data.user.email,
@@ -96,6 +101,8 @@ function showUserInfo(data) {
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             // tokopedia.alert_error();
             console.log(XMLHttpRequest);
+            console.log(textStatus);
+            console.log(errorThrown);
             renderPage('error', XMLHttpRequest);
         },
         beforeSend: function(){

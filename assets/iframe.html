@@ -4,34 +4,35 @@
     <link href="main.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Static navbar -->
-    <nav id="top-nav" class="navbar navbar-default hidden">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">TZA</a>
+    <div id="apps-container" class="loading">
+        <!-- Static navbar -->
+        <nav id="top-nav" class="navbar navbar-default hidden">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">TZA</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a id="go-to-home" href="#">Home</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reset<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Reset Buyer Notification</a></li>
+                                <li><a href="#">Reset Seller Notification</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a id="go-to-home" href="#">Home</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reset<span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Reset Buyer Notification</a></li>
-                            <li><a href="#">Reset Seller Notification</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div id="main-content"></div>
-    
+        </nav>
+        <div id="main-content"></div>
+    </div>
     <!-- Begin Handlebar Template -->
     <script id="index-template" type="text/x-handlebars-template">
         <table>
