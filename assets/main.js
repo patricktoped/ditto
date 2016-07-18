@@ -64,7 +64,7 @@ function resetNotification(dt, type){
             if(result.success){
                 notif_data['type'] = type;
                 
-                if(type == "buyer"){}
+                if(type == "buyer"){
                     notif_data['buyer'] = 1;
                     notif_data['notification'] = {
                         'buyer_order_status'  : result.notification.buyer_order_status,
@@ -164,7 +164,7 @@ function showUserInfo(data) {
         timeout: 5000,
         success: function(result){
             var requester_data = new Object();
-            
+            console.log(result);
             if(result.user){
                 user_id = result.user.id;
                 requester_data['user'] = {
