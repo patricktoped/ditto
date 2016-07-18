@@ -164,7 +164,7 @@ function showUserInfo(data) {
         timeout: 5000,
         success: function(result){
             var requester_data = new Object();
-            console.log(result);
+
             if(result.user){
                 user_id = result.user.id;
                 requester_data['user'] = {
