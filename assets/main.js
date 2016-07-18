@@ -51,6 +51,8 @@ function requestUserInfo() {
 }
 
 function resetNotification(dt, type){
+    dt.token = config.token;
+    
     $.ajax({
         dataType: "jsonp",
         type: "GET",
@@ -154,7 +156,8 @@ function showUserInfo(data) {
     var dt = new Object();
     dt.action     = "get_user_info";
     dt.user_email = encodeURIComponent(data.user.email);
-
+    dt.token      = config.token;
+    
     $.ajax({
         dataType: "jsonp",
         type: "GET",
