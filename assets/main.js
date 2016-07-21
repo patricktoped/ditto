@@ -51,7 +51,8 @@ function requestUserInfo() {
 }
 
 function resetNotification(dt, type){
-    dt.token = config.token;
+    dt.action = (type == 'seller') ? 'reset_seller_notification' : 'reset_buyer_notification';
+    dt.token  = config.token;
     
     $.ajax({
         dataType: "jsonp",
@@ -62,7 +63,7 @@ function resetNotification(dt, type){
         timeout: 5000,
         success: function(result){
             var notif_data = new Object();
-            
+            console.log(result);
             if(result.success){
                 notif_data['type'] = type;
                 

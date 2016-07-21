@@ -30,11 +30,13 @@
                 <td>:</td>
                 <td class="data">{{user.status}}</td>
             </tr>
+            {{#if user.id}}
             <tr>
                 <td>User ID</td>
                 <td>:</td>
                 <td class="data"><a href="{{user.url}}" target="_blank">{{user.url}}</a></td>
             </tr>
+            {{/if}}
         </table>
         <table id="shop-info">
         {{#if shop.id}}
@@ -54,7 +56,7 @@
             <tr>
                 <td>Shop Domain</td>
                 <td>:</td>
-                <td class="data"><a href="{{shop.domain}}" target="_blank">{{shop.domain}}</a></td>
+                <td class="data"><a href="{{shop.url}}" target="_blank">{{shop.url}}</a></td>
             </tr>
         {{else}}
             <tr>
